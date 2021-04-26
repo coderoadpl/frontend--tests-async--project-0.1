@@ -48,3 +48,17 @@ describe('initial state', () => {
     })
 
 })
+
+describe('state after first load', () => {
+
+    it('should have users loaded', (done) => {
+        const app1 = createMockedApp()
+        app1.init()
+
+        queueMicrotask(() => {
+            expect(app1.users).toStrictEqual(MOCK_USERS)
+            done()
+        })
+    })
+
+})
