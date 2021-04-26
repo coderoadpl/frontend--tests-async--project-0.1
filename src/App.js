@@ -8,8 +8,6 @@ export class App {
         this.container = null
         this.users = null
         this.loading = true
-
-        this.init()
     }
 
     init() {
