@@ -24,7 +24,7 @@ const loadUsersMocked = async function loadUsers() {
 
 const createMockedApp = () => {
     const app = new App()
-    app.loadUsers = loadUsersMocked
+    app.loadUsers = jest.fn(loadUsersMocked)
     return app
 }
 
@@ -51,7 +51,9 @@ describe('initial state', () => {
 
 describe('state after first load', () => {
 
-    it('should have users loaded', (done) => {
+    it('should have users loaded - queueMicrotask', (done) => {
+        expect.assertions(1)
+
         const app1 = createMockedApp()
         app1.init()
 
@@ -59,6 +61,18 @@ describe('state after first load', () => {
             expect(app1.users).toStrictEqual(MOCK_USERS)
             done()
         })
+    })
+
+    it('should have users loaded - jest mock function results', async () => {
+        expect.assertions(2)
+
+        const app1 = createMockedApp()
+        app1.init()
+
+        const users = await app1.loadUsers.mock.results[0].value
+
+        expect(users).toStrictEqual(MOCK_USERS)
+        expect(app1.users).toStrictEqual(MOCK_USERS)
     })
 
 })
