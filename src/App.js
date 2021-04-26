@@ -1,3 +1,4 @@
+import User from './components/User'
 import Loader from './components/Loader'
 
 import { fetchUsers } from './api/fetchUsers'
@@ -51,6 +52,8 @@ export class App {
         if (this.container === null) {
             this.container = document.createElement('div')
             this.container.style.position = 'relative'
+            this.container.style.maxWidth = '320px'
+            this.container.style.margin = '0 auto'
         }
 
         this.container.innerHTML = ''
@@ -60,10 +63,12 @@ export class App {
             this.container.appendChild(loaderElement.render())
         }
 
-        const text = JSON.stringify(this.users)
-        const textNode = document.createTextNode(text)
-
-        this.container.appendChild(textNode)
+        if (this.users) {
+            this.users.forEach((user) => {
+                const userElement = new User(user)
+                this.container.appendChild(userElement.render())
+            })
+        }
 
         return this.container
     }
